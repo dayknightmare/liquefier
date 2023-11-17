@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: liquefier-postgres
+    command: postgres -c config_file=/configs/postgresql.conf
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=liquefier
+      - POSTGRES_USER=liquefier
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - ./storage/postgres:/var/lib/postgresql/data
+      - ./configs/postgres/postgresql.conf:/configs/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U liquefier -d liquefier"]
+      interval: 10s
+      timeout: 10s
+      retries: 5

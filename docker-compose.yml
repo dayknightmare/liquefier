@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: liquefier-zk
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: liquefier-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  connector:
+    image: debezium/connect:1.2
+    container_name: liquefier-debezium
+    ports:
+      - "8083:8083"
+    environment:
+      GROUP_ID: medium_debezium
+      CONFIG_STORAGE_TOPIC: my_connect_configs
+      OFFSET_STORAGE_TOPIC: my_connect_offsets
+      STATUS_STORAGE_TOPIC: my_connect_statuses
+      BOOTSTRAP_SERVERS: kafka:9092
+      CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      STATUS_STORAGE_REPLICATION_FACTOR: 1
+      REST_ADVERTISED_HOST_NAME: medium_debezium
+    depends_on:
+      - zookeeper
+      - kafka
+
+  liquefier:
+    build:
+      dockerfile: ./docker/dev/Dockerfile
+      context: ./backend
+    container_name: liquefier-backend
+    command: uvicorn main:app --reload --host 0.0.0.0
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/liquefier

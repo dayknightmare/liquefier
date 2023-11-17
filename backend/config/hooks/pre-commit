@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# docker exec dominator-api black .
+# ruff=$(docker exec dominator-api ruff .)
+
+# if [ "$ruff" != "" ]; then
+#     echo "please, fix all the lint issues below";
+#     echo $ruff;
+#     exit 1;
+# else
+#     echo "Lint ok"
+# fi
+
+# docker exec dominator-api python -m pytest --cov src --cov-report=html tests/ -v -x --cache-clear
+# docker exec dominator-api coverage json -o htmlcov/coverage.json
+# percent=$(docker exec dominator-api python config/coverage_checker.py htmlcov/coverage.json)
+
+# echo "Units => $percent"
+
+# if [ "$percent" != "100" ]; then
+#     echo "Please, do all tests to cover 100% of the code";
+#     exit 1;
+# else
+#     echo "Tests ok";
+# fi
+
+# echo "All ok to commit";

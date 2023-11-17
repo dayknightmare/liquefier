@@ -1,0 +1,20 @@
+{
+    "name": "mysql-changes",
+    "config": {
+        "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+        "tasks.max": "1",
+        "database.hostname": "mysql",
+        "database.port": "3306",
+        "database.user": "root",
+        "database.password": "root",
+        "database.server.id": "1543",
+        "database.server.name": "dbmysql",
+        "topic.prefix": "dbmysql",
+        "include.schema.changes": "true",
+        "database.history.kafka.topic": "mysql.changes",
+        "database.history.kafka.bootstrap.servers": "kafka:9092",
+        "database.allowPublicKeyRetrieval": true,
+        "snapshot.mode": "initial",
+        "snapshot.locking.mode": "none"
+    }
+}

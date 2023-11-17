@@ -1,0 +1,11 @@
+{
+    "name": "mongo-changes",
+    "config": {
+        "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+        "connection.uri": "mongodb://mongo",
+        "mongodb.hosts": "liquefierReplica/mongo:27017",
+        "mongodb.name": "liquefier",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter"
+    }
+}

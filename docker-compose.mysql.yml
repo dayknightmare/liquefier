@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    container_name: liquefier-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_DATABASE=liquefier
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./configs/mysql/database:/docker-entrypoint-initdb.d
+      - ./configs/mysql/my.cnf:/etc/mysql/conf.d/mysql.cnf
+      - ./storage/mysql:/var/lib/mysql
+    security_opt:
+      - seccomp:unconfined

@@ -1,0 +1,16 @@
+{
+    "name": "postgres-changes",
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "tasks.max": "1",
+        "database.hostname": "postgres",
+        "database.port": "5432",
+        "database.user": "liquefier",
+        "database.password": "root",
+        "topic.prefix": "dbpostgres",
+        "plugin.name": "pgoutput",
+        "database.dbname": "liquefier",
+        "database.server.name": "dbpostgres",
+        "slot.name": "liquefier"
+    }
+}

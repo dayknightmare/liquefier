@@ -1,0 +1,7 @@
+[run]
+omit = src/utils/lint.py,
+    src/**/router.py,
+    src/dto/*,
+    src/models/*,
+    src/domain/*,
+    migrations/*
