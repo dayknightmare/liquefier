@@ -1,3 +1,4 @@
+from .repositories.topic_rule_repository import TopicRuleRepository
 from .repositories.topic_repository import TopicRepository
 from src.application.spi.db_interface import DbInterface
 
@@ -7,6 +8,7 @@ class RepositoryFactory:
         self.__db = db
         self.__repositories = {
             "topic_repository": TopicRepository(self.__db),
+            "topic_rule_repository": TopicRuleRepository(self.__db),
         }
 
     def get_repositories(self, name: str):

@@ -20,6 +20,12 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
   connector:
     image: debezium/connect:1.2
@@ -37,8 +43,10 @@ services:
       STATUS_STORAGE_REPLICATION_FACTOR: 1
       REST_ADVERTISED_HOST_NAME: medium_debezium
     depends_on:
-      - zookeeper
-      - kafka
+        zookeeper:
+          condition: service_started
+        kafka:
+          condition: service_healthy
 
   liquefier:
     build:
@@ -50,3 +58,8 @@ services:
       - 8000:8000
     volumes:
       - ./backend:/liquefier
+    depends_on:
+      zookeeper:
+        condition: service_started
+      kafka:
+        condition: service_healthy

@@ -1,4 +1,5 @@
 from src.adapters.spi.repository_factory import RepositoryFactory
+from src.adapters.api.topic_rule.router import topic_rule_router
 from src.adapters.api.topic.router import topic_router
 from src.adapters.spi.stream.consumer import Stream
 from injector import Injector, SingletonScope
@@ -19,6 +20,7 @@ def create_app(injector: Injector) -> FastAPI:
     injector.binder.bind(Stream, to=stream, scope=SingletonScope)
 
     app.include_router(topic_router, tags=["Topic"])
+    app.include_router(topic_rule_router, tags=["Topic Rule"])
 
     attach_injector(app, injector)
 
