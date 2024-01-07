@@ -18,9 +18,10 @@ class Settings(BaseSettings):
 
     kafka_hosts: str = "localhost:9092"
 
-    use_cache: bool = True
+    use_cache: bool = False
     redis_host: Optional[str] = None
     redis_port: Optional[int] = None
+    is_redis_cluster: bool = False
 
     jwt_secret: str
 

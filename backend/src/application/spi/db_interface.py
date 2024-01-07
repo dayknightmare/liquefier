@@ -1,7 +1,8 @@
+from src.application.spi.cache_interface import CacheInterface
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from typing import Generator, Optional
 from sqlalchemy import create_engine
-from typing import Generator
 from abc import ABC
 import contextlib
 
@@ -11,8 +12,9 @@ Base = declarative_base()
 
 class DbInterface(ABC):
     db_url = ""
+    cache: Optional[CacheInterface] = None
 
-    def __init__(self):
+    def __init__(self, cache: Optional[CacheInterface] = None):
         self.engine = create_engine(
             self.db_url,
             pool_size=20,
@@ -25,6 +27,8 @@ class DbInterface(ABC):
             autoflush=False,
             bind=self.engine,
         )
+
+        self.cache = cache
 
     @contextlib.contextmanager
     def get_connection(self) -> Generator[Session, None, None]:
