@@ -14,11 +14,6 @@ class TopicRuleAddCase:
         self,
         data: TopicRuleAddDTO,
     ) -> TopicEntity | None:
-        topic_rule = self.repository.get_by_topic_id(data.topic_id)
-
-        if topic_rule is not None:
-            return None
-
         result = self.repository.add(data)
         self.repository.mapper.to_entity(result)
 

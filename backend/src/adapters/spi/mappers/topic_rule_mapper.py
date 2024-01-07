@@ -17,6 +17,7 @@ class TopicRuleMapper(MapperInterface):
             output=model.output,  # type: ignore
             extras=model.extras,  # type: ignore
             status=model.status,  # type: ignore
+            name=model.name,  # type: ignore
             created_at=model.created_at,  # type: ignore
         )
 
@@ -33,6 +34,7 @@ class TopicRuleQueryMapper(MapperInterface):
             "filter_topic_id": TopicRule.topic_id,
             "filter_status": TopicRule.status,
             "filter_output": TopicRule.output,
+            "filter_name": TopicRule.name,
         }
 
         result: list[BinaryExpression] = []

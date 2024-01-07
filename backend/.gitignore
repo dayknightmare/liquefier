@@ -117,5 +117,5 @@ k6/
 /storage/*
 !/storage/.gitkeep
 
-src/external/*
-!src/external/.gitkeep
+/external/*
+!/external/.gitkeep

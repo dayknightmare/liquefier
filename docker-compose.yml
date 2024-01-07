@@ -7,19 +7,27 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: nc -z localhost 2181 || exit -1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: liquefier-kafka
-    depends_on:
-      - zookeeper
     ports:
       - 9092:9092
+    restart: on-failure:3
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      zookeeper:
+        condition: service_healthy
     healthcheck:
       test: nc -z localhost 9092 || exit -1
       start_period: 15s
@@ -32,6 +40,7 @@ services:
     container_name: liquefier-debezium
     ports:
       - "8083:8083"
+    restart: on-failure:3
     environment:
       GROUP_ID: medium_debezium
       CONFIG_STORAGE_TOPIC: my_connect_configs
@@ -54,6 +63,7 @@ services:
       context: ./backend
     container_name: liquefier-backend
     command: uvicorn main:app --reload --host 0.0.0.0
+    restart: on-failure:3
     ports:
       - 8000:8000
     volumes:

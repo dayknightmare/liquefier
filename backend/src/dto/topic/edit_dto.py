@@ -3,4 +3,4 @@ from typing import Literal
 
 
 class TopicEditDTO(BaseModel):
-    status: Literal[1, 2]
+    status: Literal[1, 0]

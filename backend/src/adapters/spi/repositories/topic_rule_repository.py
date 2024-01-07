@@ -18,16 +18,13 @@ class TopicRuleRepository(RepositoryInterface[TopicRule]):
             self.query_mapper,
         )
 
-    def get_by_topic_id(self, id: str) -> TopicRule | None:
+    def get_by_topic_id(self, id: str) -> list[TopicRule]:
         with self.db.get_connection() as session:
             data = (
                 session.query(TopicRule)
                 .filter(TopicRule.topic_id == id)
                 .filter(TopicRule.is_deleted.is_(False))
-                .first()
+                .all()
             )
 
-        if data:
-            return data
-
-        return None
+        return data

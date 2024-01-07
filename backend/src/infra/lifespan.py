@@ -16,8 +16,16 @@ async def lifespan(
     repositories = injection.get(RepositoryFactory)
     stream = injection.get(Stream)
     consumer = stream.get_consumer()
+    producer = stream.get_producer()
     event = threading.Event()
-    reader = StreamReader(consumer, event)
+
+    reader = StreamReader(
+        consumer,
+        producer,
+        event,
+        repositories.get_repositories("topic_repository"),
+        repositories.get_repositories("topic_rule_repository"),
+    )
 
     topics = [
         i.name

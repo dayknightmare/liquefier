@@ -29,9 +29,4 @@ class TopicRuleAddController(ControllerInterface):
             self.repository,
         ).handle(data)
 
-        if result is None:
-            self.response.status_code = 400
-
-            return {"error": "Topic rule already exists"}
-
         return {"data": result}
